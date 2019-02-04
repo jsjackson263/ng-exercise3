@@ -1,50 +1,53 @@
 (function() {
   'use strict';
 
-  var app = angular.module('NarrowItDownAp', []);
-  app.controller('NarrowItDownController', NarrowItDownController)
+  var app = angular.module('NarrowItDownApp', []);
+  app.controller('NarrowItDownController', NarrowItDownController);
   app.factory('MenuSearchFactory', MenuSearchFactory);
 
-  NarrowItDownController.$inject = ['MenuSearchService']
-  function NarrowItDownController(MenuSearchService) {
+  NarrowItDownController.$inject = ['MenuSearchFactory'];
+  function NarrowItDownController(MenuSearchFactory) {
     var ctrl = this;
 
     ctrl.searchTerm = "";
 
-    MenuSearchService = MenuSearchFactory();
+    var menuSearchService = MenuSearchFactory();
     var searchTerm = ctrl.searchTerm;
 
     ctrl.getMatchedMenuItems = function(searchTerm) {
-      return MenuSearchService.getMatchedMenuItems(searchTerm);
+      return menuSearchService.getMatchedMenuItems(searchTerm);
     };
 
   }
 
 
-  MenuSearchService.$inject = ['$http'];
-  function MenuSearchService($http) {
+  MenuSearchService.$inject = ['$http', 'searchTerm'];
+  function MenuSearchService($http, searchTerm) {
     var service = this;
 
-    this.getMatchedMenuItems = function(searchTerm) {
+    service.getMatchedMenuItems = function(searchTerm) {
 
       var response = $http({
         method: "GET",
         url: "https://davids-restaurant.herokuapp.com/menu_items.json"
+      }).then(function(result) {
+        // success
       });
 
-      return response
-      .then(function(result) {
 
-        console.log("Result: ", result.data);
-        // process result and only keep items that match
-        //var foundItems...
+      // .then(function(result) {
+      //
+      //   console.log("Result: ", result.data);
+      //   // process result and only keep items that match
+      //   //var foundItems...
+      //
+      //   // return processed items
+      //   return foundItems;
+      //
+      //
+      // });
 
-        // return processed items
-        return foundItems;
-
-
-      });
-
+       return response;
 
     };
 
