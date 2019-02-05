@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>Narrow Down Your Menu Choice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -21,7 +22,7 @@
     </div>
 
     <div>
-      <table id="menu-grid">
+      <!-- <table id="menu-grid">
         <tr ng-if="ctrl.found">
           <th>Short Name</th>
           <th>Name</th>
@@ -41,11 +42,11 @@
           <td>{{item.large_portion_name}}</td>
           <td><button id="remove" ng-click="ctrl.removeItem($index)">Don't want this one!</button></td>
         </tr>
-      </table>
+      </table> -->
 
     </div>
     <!-- found-items should be implemented as a component -->
-    <found-items found-items="...." on-remove="...."></found-items>
+    <found-items found="ctrl.found" on-remove="ctrl.Item(index)"></found-items>
   </div>
 
 </body>

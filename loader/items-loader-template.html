@@ -1,0 +1,25 @@
+<div class="loader">
+
+  <table id="menu-grid">
+    <tr ng-if="ctrl.found">
+      <th>Short Name</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price(small)</th>
+      <th>Portion</th>
+      <th>Price (large)</th>
+      <th>Portion</th>
+    </tr>
+    <tr ng-repeat="item in ctrl.found">
+      <td>{{item.short_name}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.description}}</td>
+      <td>{{item.price_small}}</td>
+      <td>{{item.small_portion_name}}</td>
+      <td>{{item.price_large}}</td>
+      <td>{{item.large_portion_name}}</td>
+      <td><button id="remove" ng-click="ctrl.removeItem($index)">Don't want this one!</button></td>
+    </tr>
+  </table>
+  
+</div>
