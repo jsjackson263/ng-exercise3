@@ -3,63 +3,63 @@
 
   var app = angular.module('NarrowItDownApp', []);
   app.controller('NarrowItDownController', NarrowItDownController);
-  app.factory('MenuSearchFactory', MenuSearchFactory);
+  app.service('MenuSearchService', MenuSearchService);
 
-  NarrowItDownController.$inject = ['MenuSearchFactory'];
-  function NarrowItDownController(MenuSearchFactory) {
+  NarrowItDownController.$inject = ['MenuSearchService'];
+  function NarrowItDownController(MenuSearchService) {
     var ctrl = this;
 
     ctrl.searchTerm = "";
-
-    var menuSearchService = MenuSearchFactory();
     var searchTerm = ctrl.searchTerm;
 
     ctrl.getMatchedMenuItems = function(searchTerm) {
-      return menuSearchService.getMatchedMenuItems(searchTerm);
+      var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
+      promise.then(function(response) {
+        console.log("response from promise: ", response);
+        ctrl.found = response;
+      }).catch(function(error) {
+        console.log(error);
+      });
+
+    };
+
+    ctrl.removeItem = function(itemIndex) {
+      ctrl.found.splice(itemIndex, 1);
     };
 
   }
 
 
-  MenuSearchService.$inject = ['$http', 'searchTerm'];
-  function MenuSearchService($http, searchTerm) {
+  MenuSearchService.$inject = ['$http'];
+  function MenuSearchService($http) {
     var service = this;
 
     service.getMatchedMenuItems = function(searchTerm) {
+      var foundItems = [];
 
-      var response = $http({
+      return $http({
         method: "GET",
         url: "https://davids-restaurant.herokuapp.com/menu_items.json"
       }).then(function(result) {
-        // success
+
+        //process result and only keep items that match
+        var menuItems = result.data.menu_items;
+        for (var i = 0; i < menuItems.length; i++) {
+          var description = menuItems[i].description;
+          if (description.toLowerCase().indexOf(searchTerm) !== -1) {
+            foundItems.push(menuItems[i]);
+          }
+        }
+
+        // return processed items
+        return foundItems;
+
+      }).catch(function(error) {
+        console.log("Error: ", error);
       });
-
-
-      // .then(function(result) {
-      //
-      //   console.log("Result: ", result.data);
-      //   // process result and only keep items that match
-      //   //var foundItems...
-      //
-      //   // return processed items
-      //   return foundItems;
-      //
-      //
-      // });
-
-       return response;
-
     };
 
   }
 
-
-  function MenuSearchFactory() {
-    var factory = function () {
-      return new MenuSearchService();
-    };
-
-    return factory;
-  }
 
 })();
