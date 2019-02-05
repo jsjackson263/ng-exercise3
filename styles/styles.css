@@ -75,3 +75,9 @@ table tr:nth-child(even) {
 tr > th {
   text-align: left;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+  /* display: none; */
+}

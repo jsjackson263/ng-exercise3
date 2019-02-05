@@ -1,7 +1,7 @@
-<div class="loader">
+<!-- <div class="loader"> -->
 
   <table id="menu-grid">
-    <tr ng-if="ctrl.found">
+    <tr ng-if="found">
       <th>Short Name</th>
       <th>Name</th>
       <th>Description</th>
@@ -9,8 +9,9 @@
       <th>Portion</th>
       <th>Price (large)</th>
       <th>Portion</th>
+      <th><button hidden>remove</button></th>
     </tr>
-    <tr ng-repeat="item in ctrl.found">
+    <tr ng-repeat="item in found">
       <td>{{item.short_name}}</td>
       <td>{{item.name}}</td>
       <td>{{item.description}}</td>
@@ -18,8 +19,9 @@
       <td>{{item.small_portion_name}}</td>
       <td>{{item.price_large}}</td>
       <td>{{item.large_portion_name}}</td>
-      <td><button id="remove" ng-click="ctrl.removeItem($index)">Don't want this one!</button></td>
+      <td><button id="remove" ng-click="onRemove({index: $index});">Don't want this one!</button></td>
     </tr>
   </table>
-  
-</div>
+  <div class="error" ng-transclude></div>
+
+<!-- </div> -->
